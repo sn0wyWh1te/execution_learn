@@ -16,6 +16,10 @@
 #include <unifex/single_thread_context.hpp>
 #include <unifex/execute.hpp>
 #include <unifex/scheduler_concepts.hpp>
+#include <unifex/just.hpp>
+#include <unifex/then.hpp>
+#include <unifex/sync_wait.hpp>
+#include <unifex/via.hpp>
 
 #include <cstdio>
 
@@ -24,11 +28,14 @@ using namespace unifex;
 int main() {
     single_thread_context ctx;
 
-    for (int i = 0; i < 5; ++i) {
-        execute(ctx.get_scheduler(), [i]() {
-            printf("hello execute() %i\n", i);
+    auto sch_sender = schedule(ctx.get_scheduler());
+    auto res = sch_sender
+        | then ([]() {
+            std::printf("done\n");
+            return 1;
         });
-    }
 
+    std::printf("return val is %d\n",sync_wait(res).value());
+    
     return 0;
 }
