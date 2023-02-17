@@ -19,7 +19,8 @@
 #include <unifex/just.hpp>
 #include <unifex/then.hpp>
 #include <unifex/sync_wait.hpp>
-#include <unifex/via.hpp>
+#include <unifex/typed_via.hpp>
+#include <iostream>
 
 #include <cstdio>
 
@@ -29,13 +30,18 @@ int main() {
     single_thread_context ctx;
 
     auto sch_sender = schedule(ctx.get_scheduler());
-    auto res = sch_sender
+    sch_sender
         | then ([]() {
-            std::printf("done\n");
+            std::cout << std::this_thread::get_id();
+            std::printf(" thread done\n");
             return 1;
-        });
-
-    std::printf("return val is %d\n",sync_wait(res).value());
+        })
+        | typed_via(ctx.get_scheduler())
+        | then([&](auto x) {
+            std::cout << std::this_thread::get_id();
+            std::printf(" thread get %d\n",x);
+        })
+        | sync_wait();
     
     return 0;
 }
