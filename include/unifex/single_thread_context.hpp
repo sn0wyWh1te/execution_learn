@@ -49,4 +49,31 @@ using single_thread_context = _single_thread::context;
 
 } // namespace unifex
 
+namespace unifex {
+namespace _event_thread {
+  class context {
+    eventfd_loop loop_;
+    std::thread thread_;
+
+  public:
+    context() : loop_(), thread_([this] { loop_.run(); }) {}
+
+    ~context() {
+      loop_.stop();
+      thread_.join();
+    }
+
+    auto get_scheduler() noexcept {
+      return loop_.get_scheduler();
+    }
+
+    std::thread::id get_thread_id() const noexcept {
+      return thread_.get_id();
+    }
+  };
+} // namespace _event_thread
+using event_thread_context = _event_thread::context;
+
+} // namespace unifex
+
 #include <unifex/detail/epilogue.hpp>

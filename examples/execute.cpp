@@ -26,8 +26,18 @@
 
 using namespace unifex;
 
+/*
+    execution架构：
+    sender代表一小段任务，任何一个异步任务，都可以分为多个同步任务，所以一个sender就是一个同步任务
+    当sync_wait时，用一个sender_consumer调用connect(sender,reciever),把执行流程穿起来，
+    穿成一个reciever，当start(op)时，开始set_value(reciever)，然后开始执行
+*/
+
+
+
 int main() {
-    single_thread_context ctx;
+    /*参照single_thread_context魔改，采用eventfd和队列来模拟任务调度*/
+    event_thread_context ctx;
 
     auto sch_sender = schedule(ctx.get_scheduler());
     sch_sender
