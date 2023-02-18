@@ -1,4 +1,23 @@
-# Overview
+# 项目：c++23 execution知识
+目标：  
+1.理解execution的使用背景及目的  
+2.理解sender,reciever,scheduler,context的概念  
+3.能看懂just_sener,ther_sender的实现  
+4.理解connect,start等函数  
+5.写一个自定义的scheduler  
+
+结题答辩内容：  
+1.如何理解sender,reciever,scheduler,context的概念  
+2.在libunifex的基础上，自己实现一个scheduler，具有模拟异步读文件费时切换任务的功能（libunifex的使用已经放在了下方）。  
+
+结题答辩：  
+全部放在./exemple/executor.cc文件中
+
+结果：  
+答辩通过  
+
+
+# libunifex简介及使用  
 
 The 'libunifex' project is a prototype implementation of the C++ sender/receiver
 async programming model that is currently being considered for standardisation.
