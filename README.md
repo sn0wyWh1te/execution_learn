@@ -11,7 +11,7 @@
 2.在libunifex的基础上，自己实现一个scheduler，具有模拟异步读文件费时切换任务的功能（libunifex的使用已经放在了下方）。  
 
 结题答辩：  
-全部放在./exemple/executor.cc文件中
+全部放在./exemple/execute.cpp文件中
 
 结果：  
 答辩通过  
